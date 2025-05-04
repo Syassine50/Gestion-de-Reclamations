@@ -3,10 +3,12 @@ package tn.saaadouni.yassine.backend_gere.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tn.saaadouni.yassine.backend_gere.models.Client;
+import tn.saaadouni.yassine.backend_gere.dto.ClientDTO;
+import tn.saaadouni.yassine.backend_gere.mapper.ClientMapper;
 import tn.saaadouni.yassine.backend_gere.services.ClientService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/clients")
@@ -16,15 +18,30 @@ public class ClientController {
     @Autowired
     private ClientService clientService;
 
+    @Autowired
+    private ClientMapper clientMapper;
+
     @PostMapping
-    public ResponseEntity<Client> createClient(@RequestBody Client client) {
-        return ResponseEntity.ok(clientService.saveClient(client));
+    public ResponseEntity<ClientDTO> createClient(@RequestBody ClientDTO clientDTO) {
+        return ResponseEntity.ok(
+            clientMapper.toDto(
+                clientService.saveClient(
+                    clientMapper.toEntity(clientDTO)
+                )
+            )
+        );
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Client> updateClient(@PathVariable Long id, @RequestBody Client client) {
-        client.setId(id);
-        return ResponseEntity.ok(clientService.updateClient(client));
+    public ResponseEntity<ClientDTO> updateClient(@PathVariable Long id, @RequestBody ClientDTO clientDTO) {
+        clientDTO.setId(id);
+        return ResponseEntity.ok(
+            clientMapper.toDto(
+                clientService.updateClient(
+                    clientMapper.toEntity(clientDTO)
+                )
+            )
+        );
     }
 
     @DeleteMapping("/{id}")
@@ -34,24 +51,40 @@ public class ClientController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Client> getClient(@PathVariable Long id) {
-        return ResponseEntity.ok(clientService.getClientById(id));
+    public ResponseEntity<ClientDTO> getClient(@PathVariable Long id) {
+        return ResponseEntity.ok(
+            clientMapper.toDto(
+                clientService.getClientById(id)
+            )
+        );
     }
 
     @GetMapping
-    public ResponseEntity<List<Client>> getAllClients() {
-        return ResponseEntity.ok(clientService.getAllClients());
+    public ResponseEntity<List<ClientDTO>> getAllClients() {
+        return ResponseEntity.ok(
+            clientService.getAllClients().stream()
+                .map(clientMapper::toDto)
+                .collect(Collectors.toList())
+        );
     }
 
     @GetMapping("/email/{email}")
-    public ResponseEntity<Client> getClientByEmail(@PathVariable String email) {
-        return ResponseEntity.ok(clientService.getClientByEmail(email)
-                .orElseThrow(() -> new RuntimeException("Client not found with email: " + email)));
+    public ResponseEntity<ClientDTO> getClientByEmail(@PathVariable String email) {
+        return ResponseEntity.ok(
+            clientMapper.toDto(
+                clientService.getClientByEmail(email)
+                    .orElseThrow(() -> new RuntimeException("Client not found with email: " + email))
+            )
+        );
     }
 
     @GetMapping("/telephone/{telephone}")
-    public ResponseEntity<Client> getClientByTelephone(@PathVariable String telephone) {
-        return ResponseEntity.ok(clientService.getClientByTelephone(telephone)
-                .orElseThrow(() -> new RuntimeException("Client not found with telephone: " + telephone)));
+    public ResponseEntity<ClientDTO> getClientByTelephone(@PathVariable String telephone) {
+        return ResponseEntity.ok(
+            clientMapper.toDto(
+                clientService.getClientByTelephone(telephone)
+                    .orElseThrow(() -> new RuntimeException("Client not found with telephone: " + telephone))
+            )
+        );
     }
 }
