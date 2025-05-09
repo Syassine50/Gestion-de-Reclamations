@@ -17,15 +17,13 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./reclamations-list.component.scss']
 })
 export class ReclamationsListComponent implements OnInit {
-  reclamations: any[] = [];
-  filteredReclamations: any[] = [];
+  reclamations: Reclamation[] = [];
+  filteredReclamations: Reclamation[] = [];
   search = '';
-  displayedColumns = ['client', 'agent', 'description', 'statut', 'priorite', 'dateReclamation', 'actions'];
+  displayedColumns = ['description', 'dateReclamation', 'statut', 'produit', 'note', 'actions'];
 
   constructor(
     private reclamationService: ReclamationService,
-    private clientService: ClientService,
-    private agentService: AgentService,
     private dialog: MatDialog
   ) {}
 
@@ -34,19 +32,7 @@ export class ReclamationsListComponent implements OnInit {
   }
 
   loadReclamations(): void {
-    forkJoin({
-      reclamations: this.reclamationService.getAll(),
-      clients: this.clientService.getAll(),
-      agents: this.agentService.getAll()
-    }).pipe(
-      map(({ reclamations, clients, agents }) => {
-        return reclamations.map(reclamation => ({
-          ...reclamation,
-          client: clients.find(c => c.id === reclamation.clientId)?.nom || 'Unknown',
-          agent: agents.find(a => a.id === reclamation.agentId)?.nom || 'Unknown'
-        }));
-      })
-    ).subscribe(data => {
+    this.reclamationService.getAll().subscribe(data => {
       this.reclamations = data;
       this.filteredReclamations = data;
     });
@@ -55,10 +41,9 @@ export class ReclamationsListComponent implements OnInit {
   applyFilter(): void {
     const filterValue = this.search.toLowerCase();
     this.filteredReclamations = this.reclamations.filter(reclamation =>
-      reclamation.client.toLowerCase().includes(filterValue) ||
-      reclamation.agent.toLowerCase().includes(filterValue) ||
       reclamation.description.toLowerCase().includes(filterValue) ||
-      reclamation.statut.toLowerCase().includes(filterValue)
+      reclamation.statut.toLowerCase().includes(filterValue) ||
+      reclamation.produit.toLowerCase().includes(filterValue)
     );
   }
 
@@ -67,11 +52,11 @@ export class ReclamationsListComponent implements OnInit {
       width: '600px',
       data: { 
         reclamation: {
-          id: 0,
           description: '',
+          dateReclamation: new Date().toISOString(),
           statut: 'EN_ATTENTE',
-          priorite: 'MOYENNE',
-          dateReclamation: new Date(),
+          produit: '',
+          note: 0,
           clientId: null,
           agentId: null
         }
@@ -80,9 +65,7 @@ export class ReclamationsListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.reclamationService.create(result).subscribe(() => {
-          this.loadReclamations();
-        });
+        this.loadReclamations();
       }
     });
   }
@@ -95,9 +78,7 @@ export class ReclamationsListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.reclamationService.update(result.id, result).subscribe(() => {
-          this.loadReclamations();
-        });
+        this.loadReclamations();
       }
     });
   }
@@ -110,7 +91,7 @@ export class ReclamationsListComponent implements OnInit {
     }
   }
 
-  formatDate(date: string | Date): string {
+  formatDate(date: string): string {
     return new Date(date).toLocaleDateString();
   }
 }

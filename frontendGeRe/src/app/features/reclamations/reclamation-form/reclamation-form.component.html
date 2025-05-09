@@ -5,18 +5,6 @@
 
   <form (ngSubmit)="onSubmit()" #form="ngForm" *ngIf="!isLoading">
     <mat-form-field class="full-width">
-      <mat-label>Client</mat-label>
-      <mat-select required [(ngModel)]="reclamation.clientId" name="clientId"
-                [errorStateMatcher]="matcher"
-                (selectionChange)="onFieldChange('clientId')">
-        <mat-option *ngFor="let client of clients" [value]="client.id">
-          {{client.nom}} ({{client.email}})
-        </mat-option>
-      </mat-select>
-      <mat-error *ngIf="hasError('clientId')">{{getErrorMessage('clientId')}}</mat-error>
-    </mat-form-field>
-
-    <mat-form-field class="full-width">
       <mat-label>Description</mat-label>
       <textarea matInput required [(ngModel)]="reclamation.description" name="description"
                 [errorStateMatcher]="matcher"
@@ -28,9 +16,14 @@
     <div class="form-row">
       <mat-form-field class="half-width">
         <mat-label>Status</mat-label>
-        <input matInput required [(ngModel)]="reclamation.statut" name="statut"
-               [errorStateMatcher]="matcher"
-               (ngModelChange)="onFieldChange('statut')" />
+        <mat-select required [(ngModel)]="reclamation.statut" name="statut"
+                  [errorStateMatcher]="matcher"
+                  (selectionChange)="onFieldChange('statut')">
+          <mat-option value="EN_ATTENTE">En attente</mat-option>
+          <mat-option value="EN_COURS">En cours</mat-option>
+          <mat-option value="RESOLUE">Résolue</mat-option>
+          <mat-option value="FERMEE">Fermée</mat-option>
+        </mat-select>
         <mat-error *ngIf="hasError('statut')">{{getErrorMessage('statut')}}</mat-error>
       </mat-form-field>
 
@@ -43,24 +36,39 @@
       </mat-form-field>
     </div>
 
+    <div class="form-row">
+      <mat-form-field class="half-width">
+        <mat-label>Client</mat-label>
+        <mat-select required [(ngModel)]="reclamation.clientId" name="clientId"
+                  [errorStateMatcher]="matcher"
+                  (selectionChange)="onFieldChange('clientId')">
+          <mat-option *ngFor="let client of clients" [value]="client.id">
+            {{client.nom}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="hasError('clientId')">{{getErrorMessage('clientId')}}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="half-width">
+        <mat-label>Agent</mat-label>
+        <mat-select [(ngModel)]="reclamation.agentId" name="agentId"
+                  [errorStateMatcher]="matcher"
+                  (selectionChange)="onFieldChange('agentId')">
+          <mat-option [value]="null">None</mat-option>
+          <mat-option *ngFor="let agent of agents" [value]="agent.id">
+            {{agent.nom}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
     <mat-form-field class="full-width">
-      <mat-label>Note</mat-label>
+      <mat-label>Rating</mat-label>
       <input matInput type="number" min="0" max="5" [(ngModel)]="reclamation.note" name="note"
              [errorStateMatcher]="matcher"
              (ngModelChange)="onFieldChange('note')" />
       <mat-hint>Rate from 0 to 5</mat-hint>
-    </mat-form-field>
-
-    <mat-form-field class="full-width">
-      <mat-label>Assigned Agent</mat-label>
-      <mat-select [(ngModel)]="reclamation.agentId" name="agentId"
-                [errorStateMatcher]="matcher"
-                (selectionChange)="onFieldChange('agentId')">
-        <mat-option [value]="null">None</mat-option>
-        <mat-option *ngFor="let agent of agents" [value]="agent.id">
-          {{agent.nom}} {{agent.prenom}} ({{agent.competence}})
-        </mat-option>
-      </mat-select>
+      <mat-error *ngIf="hasError('note')">{{getErrorMessage('note')}}</mat-error>
     </mat-form-field>
   </form>
 </mat-dialog-content>
