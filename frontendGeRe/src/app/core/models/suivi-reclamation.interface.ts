@@ -1,5 +1,5 @@
 export interface SuiviReclamation {
-    id: number;
+    id?: number;
     action: string;
     date: string;
     reclamationId: number;

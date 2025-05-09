@@ -1,5 +1,5 @@
 mat-card {
-  margin: 2rem;
+  margin: 1rem;
   padding: 1rem;
 }
 
@@ -17,6 +17,7 @@ mat-card {
 
 table {
   width: 100%;
+  margin-bottom: 1rem;
 }
 
 .description-cell {
@@ -57,9 +58,8 @@ table {
 
 .no-data {
   text-align: center;
-  padding: 2rem;
-  color: #666;
-  font-style: italic;
+  padding: 1rem;
+  color: rgba(0, 0, 0, 0.54);
 }
 
 button[mat-icon-button] {
@@ -172,14 +172,15 @@ button[mat-icon-button] {
 table {
   width: 100%;
   margin-top: 16px;
+  margin-bottom: 1rem;
 }
 
 .table-actions {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 16px;
-  gap: 16px;
+  margin-bottom: 1rem;
+  gap: 1rem;
 }
 
 .full-width {
@@ -218,7 +219,26 @@ table {
 
 .no-data {
   text-align: center;
-  padding: 24px;
-  color: #666;
-  font-style: italic;
+  padding: 1rem;
+  color: rgba(0, 0, 0, 0.54);
+}
+
+// Animation for table rows
+tr.mat-row {
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 600px) {
+  .table-actions {
+    flex-direction: column;
+    
+    button {
+      width: 100%;
+    }
+  }
 }

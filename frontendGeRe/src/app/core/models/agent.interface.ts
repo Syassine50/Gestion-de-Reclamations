@@ -1,5 +1,5 @@
 export interface Agent {
-    id: number;
+    id?: number;
     nom: string;
     prenom: string;
     competence: string;
