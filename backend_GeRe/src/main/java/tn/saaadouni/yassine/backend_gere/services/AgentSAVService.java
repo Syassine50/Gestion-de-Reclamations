@@ -1,6 +1,8 @@
- package tn.saaadouni.yassine.backend_gere.services;
+package tn.saaadouni.yassine.backend_gere.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import tn.saaadouni.yassine.backend_gere.models.AgentSAV;
 import tn.saaadouni.yassine.backend_gere.repositories.AgentSAVRepository;
@@ -30,6 +32,15 @@ public class AgentSAVService {
                 .orElseThrow(() -> new RuntimeException("Agent not found with id: " + id));
     }
 
+    public Page<AgentSAV> getAllAgents(Pageable pageable) {
+        return agentSAVRepository.findAll(pageable);
+    }
+
+    public Page<AgentSAV> getAgentsByCompetence(String competence, Pageable pageable) {
+        return agentSAVRepository.findByCompetence(competence, pageable);
+    }
+
+    // Keep the non-paginated methods for backward compatibility
     public List<AgentSAV> getAllAgents() {
         return agentSAVRepository.findAll();
     }
