@@ -65,10 +65,6 @@ export class ReclamationFormComponent {
     
     this.isSubmitting = true;
     
-    if (!this.reclamation.id) {
-      this.reclamation = { ...this.reclamation, id: undefined };
-    }
-    
     const operation = this.reclamation.id
       ? this.reclamationService.update(this.reclamation.id, this.reclamation)
       : this.reclamationService.create(this.reclamation);
@@ -92,10 +88,19 @@ export class ReclamationFormComponent {
 
   validateForm(): boolean {
     let isValid = true;
-    this.errors = {};
 
     if (!this.reclamation.description?.trim()) {
       this.errors['description'] = 'Description is required';
+      isValid = false;
+    }
+
+    if (!this.reclamation.produit?.trim()) {
+      this.errors['produit'] = 'Product is required';
+      isValid = false;
+    }
+
+    if (!this.reclamation.statut?.trim()) {
+      this.errors['statut'] = 'Status is required';
       isValid = false;
     }
 
@@ -104,13 +109,8 @@ export class ReclamationFormComponent {
       isValid = false;
     }
 
-    if (!this.reclamation.statut) {
-      this.errors['statut'] = 'Status is required';
-      isValid = false;
-    }
-
-    if (!this.reclamation.produit) {
-      this.errors['produit'] = 'Product is required';
+    if (this.reclamation.note < 0 || this.reclamation.note > 5) {
+      this.errors['note'] = 'Rating must be between 0 and 5';
       isValid = false;
     }
 

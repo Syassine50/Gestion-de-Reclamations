@@ -1,8 +1,19 @@
 <mat-toolbar color="primary">Reclamations</mat-toolbar>
 
 <mat-card>
-  <table mat-table [dataSource]="reclamations" class="mat-elevation-z8" *ngIf="reclamations.length">
+  <div class="table-actions">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Search</mat-label>
+      <input matInput [(ngModel)]="search" (input)="applyFilter()" placeholder="Search reclamations">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
 
+    <button mat-raised-button color="primary" (click)="openAddDialog()">
+      <mat-icon>add</mat-icon> Add Reclamation
+    </button>
+  </div>
+
+  <table mat-table [dataSource]="filteredReclamations" class="mat-elevation-z8">
     <ng-container matColumnDef="produit">
       <th mat-header-cell *matHeaderCellDef>Product</th>
       <td mat-cell *matCellDef="let r">{{ r.produit }}</td>
@@ -10,24 +21,35 @@
 
     <ng-container matColumnDef="description">
       <th mat-header-cell *matHeaderCellDef>Description</th>
-      <td mat-cell *matCellDef="let r">{{ r.description }}</td>
+      <td mat-cell *matCellDef="let r" class="description-cell" [matTooltip]="r.description">
+        {{ r.description }}
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="statut">
       <th mat-header-cell *matHeaderCellDef>Status</th>
-      <td mat-cell *matCellDef="let r">{{ r.statut }}</td>
+      <td mat-cell *matCellDef="let r">
+        <span class="status-badge {{r.statut.toLowerCase()}}">{{ r.statut }}</span>
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="note">
       <th mat-header-cell *matHeaderCellDef>Rating</th>
-      <td mat-cell *matCellDef="let r">{{ r.note }}</td>
+      <td mat-cell *matCellDef="let r">{{ r.note }}/5</td>
+    </ng-container>
+
+    <ng-container matColumnDef="dateReclamation">
+      <th mat-header-cell *matHeaderCellDef>Date</th>
+      <td mat-cell *matCellDef="let r">{{ formatDate(r.dateReclamation) }}</td>
     </ng-container>
 
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef>Actions</th>
       <td mat-cell *matCellDef="let r">
-        <button mat-icon-button color="primary"><mat-icon>edit</mat-icon></button>
-        <button mat-icon-button color="warn" (click)="deleteReclamation(r.id)">
+        <button mat-icon-button color="primary" (click)="openEditDialog(r)" matTooltip="Edit reclamation">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="deleteReclamation(r.id)" matTooltip="Delete reclamation">
           <mat-icon>delete</mat-icon>
         </button>
       </td>
@@ -37,5 +59,7 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <p *ngIf="!reclamations.length" class="no-data">No reclamations found.</p>
+  <p *ngIf="!filteredReclamations.length" class="no-data">
+    No reclamations found.
+  </p>
 </mat-card>
