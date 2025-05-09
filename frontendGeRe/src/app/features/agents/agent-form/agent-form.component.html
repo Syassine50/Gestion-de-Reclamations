@@ -1,19 +1,40 @@
-<form (ngSubmit)="onSubmit()" #form="ngForm">
+<h2 mat-dialog-title>{{agent.id ? 'Edit' : 'Add'}} Agent</h2>
+
+<mat-dialog-content>
+  <form (ngSubmit)="onSubmit()" #form="ngForm">
     <mat-form-field class="full-width">
       <mat-label>Last Name</mat-label>
-      <input matInput required [(ngModel)]="agent.nom" name="nom" />
+      <input matInput required [(ngModel)]="agent.nom" name="nom" 
+             [errorStateMatcher]="matcher"
+             (ngModelChange)="onFieldChange('nom')" />
+      <mat-error *ngIf="hasError('nom')">{{getErrorMessage('nom')}}</mat-error>
     </mat-form-field>
   
     <mat-form-field class="full-width">
       <mat-label>First Name</mat-label>
-      <input matInput required [(ngModel)]="agent.prenom" name="prenom" />
+      <input matInput required [(ngModel)]="agent.prenom" name="prenom" 
+             [errorStateMatcher]="matcher"
+             (ngModelChange)="onFieldChange('prenom')" />
+      <mat-error *ngIf="hasError('prenom')">{{getErrorMessage('prenom')}}</mat-error>
     </mat-form-field>
   
     <mat-form-field class="full-width">
       <mat-label>Competence</mat-label>
-      <input matInput required [(ngModel)]="agent.competence" name="competence" />
+      <input matInput required [(ngModel)]="agent.competence" name="competence" 
+             [errorStateMatcher]="matcher"
+             (ngModelChange)="onFieldChange('competence')" />
+      <mat-error *ngIf="hasError('competence')">{{getErrorMessage('competence')}}</mat-error>
     </mat-form-field>
-  
-    <button mat-raised-button color="primary" type="submit">Save</button>
   </form>
-  
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()" [disabled]="isSubmitting">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="isSubmitting">
+    <div class="button-content">
+      <mat-icon *ngIf="!isSubmitting">save</mat-icon>
+      <app-loading-spinner *ngIf="isSubmitting" [diameter]="20"></app-loading-spinner>
+      <span>{{agent.id ? 'Update' : 'Create'}}</span>
+    </div>
+  </button>
+</mat-dialog-actions>

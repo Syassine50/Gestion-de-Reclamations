@@ -34,63 +34,49 @@ export class ClientFormComponent {
 
   onSubmit(): void {
     this.errors = {};
-
+  
     if (!this.validateForm()) return;
-
+  
     this.isSubmitting = true;
+  
+    // Remove id if it's 0 or falsy to avoid sending it on creation
+    if (!this.client.id) {
+      this.client = { ...this.client, id: undefined };
+    }
+  
+    console.log(this.client);
+  
     const operation = this.client.id
       ? this.clientService.update(this.client.id, this.client)
       : this.clientService.create(this.client);
-
-    operation.pipe(
-      catchError(err => {
-        if (err.error) {
-          if (typeof err.error === 'string') {
-            // Handle duplicate email error but don't terminate operation
-            if (err.error.includes('Un client avec cet email existe déjà')) {
-              this.errors['email'] = 'This email is already registered';
-              // If we're handling a duplicate email, we should try to create a new client
-              if (!this.client.id) {
-                // Clear the email field to allow the user to enter a new one
-                this.client.email = '';
-              }
-            } 
-            // Handle duplicate phone error but don't terminate operation
-            else if (err.error.includes('Un client avec ce numéro de téléphone existe déjà')) {
-              this.errors['telephone'] = 'This phone number is already registered';
-              // If we're handling a duplicate phone, we should try to create a new client
-              if (!this.client.id) {
-                // Clear the phone field to allow the user to enter a new one
-                this.client.telephone = '';
-              }
-            } else {
-              this.notificationService.error(err.error);
-            }
-          } else if (err.error.message) {
-            this.notificationService.error(err.error.message);
-          } else {
-            this.notificationService.error('An error occurred while saving the client');
-          }
-        } else {
-          this.notificationService.error('An error occurred while saving the client');
-        }
-        // Return null to indicate there was an error, but don't continue with the success flow
-        return of(null);
-      }),
-      finalize(() => {
-        this.isSubmitting = false;
-      })
-    ).subscribe(result => {
-      // Only close dialog and show success if there was a result (no error occurred)
-      if (result) {
+  
+    operation.subscribe({
+      next: result => {
         this.notificationService.success(
           this.client.id ? 'Client updated successfully' : 'Client created successfully'
         );
         this.dialogRef.close(result);
+      },
+      error: err => {
+        const errorMsg = typeof err.error === 'string' ? err.error : err.error?.message;
+  
+        if (errorMsg?.includes('Un client avec cet email existe déjà')) {
+          this.errors['email'] = 'This email is already registered';
+          if (!this.client.id) this.client.email = '';
+        } else if (errorMsg?.includes('Un client avec ce numéro de téléphone existe déjà')) {
+          this.errors['telephone'] = 'This phone number is already registered';
+          if (!this.client.id) this.client.telephone = '';
+        } else {
+          this.notificationService.error(errorMsg || 'An error occurred while saving the client');
+        }
+      },
+      complete: () => {
+        this.isSubmitting = false;
       }
-      // If there was an error (result is null), keep the dialog open so user can correct it
     });
   }
+  
+  
 
   validateForm(): boolean {
     let isValid = true;

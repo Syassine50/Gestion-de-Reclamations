@@ -1,5 +1,5 @@
 export interface Reclamation {
-    id: number;
+    id?: number;
     description: string;
     dateReclamation: string;
     statut: string;

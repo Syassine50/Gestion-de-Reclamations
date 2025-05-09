@@ -1,32 +1,54 @@
-<mat-toolbar color="accent">Suivi Reclamations</mat-toolbar>
+<mat-toolbar color="primary">Follow-ups</mat-toolbar>
 
 <mat-card>
-  <table mat-table [dataSource]="suivis" class="mat-elevation-z8" *ngIf="suivis.length">
+  <div class="table-actions">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Search</mat-label>
+      <input matInput [(ngModel)]="search" (input)="applyFilter()" placeholder="Search by action">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
 
+    <button mat-raised-button color="primary" (click)="openAddDialog()">
+      <mat-icon>add</mat-icon> Add Follow-up
+    </button>
+  </div>
+
+  <app-loading-spinner *ngIf="isLoading" [message]="'Loading follow-ups...'"></app-loading-spinner>
+
+  <app-error-message 
+    *ngIf="error" 
+    [message]="error"
+    [retryAction]="loadSuivis.bind(this)">
+  </app-error-message>
+
+  <table mat-table [dataSource]="filteredSuivis" class="mat-elevation-z8" *ngIf="!isLoading && !error">
     <ng-container matColumnDef="action">
       <th mat-header-cell *matHeaderCellDef>Action</th>
-      <td mat-cell *matCellDef="let s">{{ s.action }}</td>
+      <td mat-cell *matCellDef="let suivi">{{ suivi.action }}</td>
     </ng-container>
 
     <ng-container matColumnDef="date">
       <th mat-header-cell *matHeaderCellDef>Date</th>
-      <td mat-cell *matCellDef="let s">{{ s.date }}</td>
+      <td mat-cell *matCellDef="let suivi">{{ formatDate(suivi.date) }}</td>
     </ng-container>
 
     <ng-container matColumnDef="reclamationId">
       <th mat-header-cell *matHeaderCellDef>Reclamation ID</th>
-      <td mat-cell *matCellDef="let s">{{ s.reclamationId }}</td>
+      <td mat-cell *matCellDef="let suivi">{{ suivi.reclamationId }}</td>
     </ng-container>
 
     <ng-container matColumnDef="agentId">
       <th mat-header-cell *matHeaderCellDef>Agent ID</th>
-      <td mat-cell *matCellDef="let s">{{ s.agentId }}</td>
+      <td mat-cell *matCellDef="let suivi">{{ suivi.agentId }}</td>
     </ng-container>
 
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef>Actions</th>
-      <td mat-cell *matCellDef="let s">
-        <button mat-icon-button color="warn" (click)="deleteSuivi(s.id)">
+      <td mat-cell *matCellDef="let suivi">
+        <button mat-icon-button color="primary" (click)="openEditDialog(suivi)" matTooltip="Edit follow-up">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="deleteSuivi(suivi.id)" matTooltip="Delete follow-up">
           <mat-icon>delete</mat-icon>
         </button>
       </td>
@@ -36,6 +58,7 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-
-  <p *ngIf="!suivis.length" class="no-data">No suivi records found.</p>
+  <p *ngIf="!isLoading && !error && !filteredSuivis.length" class="no-data">
+    No follow-ups found.
+  </p>
 </mat-card>

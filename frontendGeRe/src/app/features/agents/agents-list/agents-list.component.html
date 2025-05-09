@@ -1,13 +1,27 @@
-<mat-toolbar color="accent">Agents</mat-toolbar>
+<mat-toolbar color="primary">Agents</mat-toolbar>
 
 <mat-card>
-  <mat-form-field appearance="outline" class="full-width">
-    <mat-label>Search</mat-label>
-    <input matInput [(ngModel)]="search" (input)="applyFilter()" placeholder="Search by name or competence" />
-  </mat-form-field>
+  <div class="table-actions">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Search</mat-label>
+      <input matInput [(ngModel)]="search" (input)="applyFilter()" placeholder="Search by name or competence">
+      <mat-icon matSuffix>search</mat-icon>
+    </mat-form-field>
 
-  <table mat-table [dataSource]="filteredAgents" class="mat-elevation-z8" *ngIf="filteredAgents.length">
+    <button mat-raised-button color="primary" (click)="openAddDialog()">
+      <mat-icon>add</mat-icon> Add Agent
+    </button>
+  </div>
 
+  <app-loading-spinner *ngIf="isLoading" [message]="'Loading agents...'"></app-loading-spinner>
+
+  <app-error-message 
+    *ngIf="error" 
+    [message]="error"
+    [retryAction]="loadAgents.bind(this)">
+  </app-error-message>
+
+  <table mat-table [dataSource]="filteredAgents" class="mat-elevation-z8" *ngIf="!isLoading && !error">
     <ng-container matColumnDef="nom">
       <th mat-header-cell *matHeaderCellDef>Last Name</th>
       <td mat-cell *matCellDef="let agent">{{ agent.nom }}</td>
@@ -26,8 +40,10 @@
     <ng-container matColumnDef="actions">
       <th mat-header-cell *matHeaderCellDef>Actions</th>
       <td mat-cell *matCellDef="let agent">
-        <button mat-icon-button color="primary"><mat-icon>edit</mat-icon></button>
-        <button mat-icon-button color="warn" (click)="deleteAgent(agent.id)">
+        <button mat-icon-button color="primary" (click)="openEditDialog(agent)" matTooltip="Edit agent">
+          <mat-icon>edit</mat-icon>
+        </button>
+        <button mat-icon-button color="warn" (click)="deleteAgent(agent.id)" matTooltip="Delete agent">
           <mat-icon>delete</mat-icon>
         </button>
       </td>
@@ -37,5 +53,7 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
   </table>
 
-  <p *ngIf="!filteredAgents.length" class="no-data">No agents found.</p>
+  <p *ngIf="!isLoading && !error && !filteredAgents.length" class="no-data">
+    No agents found.
+  </p>
 </mat-card>

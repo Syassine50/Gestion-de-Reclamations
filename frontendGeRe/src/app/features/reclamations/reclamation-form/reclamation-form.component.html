@@ -1,33 +1,77 @@
-<form (ngSubmit)="onSubmit()" #form="ngForm">
+<h2 mat-dialog-title>{{reclamation.id ? 'Edit' : 'New'}} Reclamation</h2>
+
+<mat-dialog-content>
+  <app-loading-spinner *ngIf="isLoading" [message]="'Loading form data...'"></app-loading-spinner>
+
+  <form (ngSubmit)="onSubmit()" #form="ngForm" *ngIf="!isLoading">
     <mat-form-field class="full-width">
-      <mat-label>Product</mat-label>
-      <input matInput required [(ngModel)]="reclamation.produit" name="produit" />
+      <mat-label>Client</mat-label>
+      <mat-select required [(ngModel)]="reclamation.clientId" name="clientId"
+                [errorStateMatcher]="matcher"
+                (selectionChange)="onFieldChange('clientId')">
+        <mat-option *ngFor="let client of clients" [value]="client.id">
+          {{client.nom}} ({{client.email}})
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="hasError('clientId')">{{getErrorMessage('clientId')}}</mat-error>
     </mat-form-field>
-  
+
     <mat-form-field class="full-width">
       <mat-label>Description</mat-label>
-      <textarea matInput required [(ngModel)]="reclamation.description" name="description"></textarea>
+      <textarea matInput required [(ngModel)]="reclamation.description" name="description"
+                [errorStateMatcher]="matcher"
+                (ngModelChange)="onFieldChange('description')"
+                rows="3"></textarea>
+      <mat-error *ngIf="hasError('description')">{{getErrorMessage('description')}}</mat-error>
     </mat-form-field>
-  
+
+    <div class="form-row">
+      <mat-form-field class="half-width">
+        <mat-label>Status</mat-label>
+        <input matInput required [(ngModel)]="reclamation.statut" name="statut"
+               [errorStateMatcher]="matcher"
+               (ngModelChange)="onFieldChange('statut')" />
+        <mat-error *ngIf="hasError('statut')">{{getErrorMessage('statut')}}</mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="half-width">
+        <mat-label>Product</mat-label>
+        <input matInput required [(ngModel)]="reclamation.produit" name="produit"
+               [errorStateMatcher]="matcher"
+               (ngModelChange)="onFieldChange('produit')" />
+        <mat-error *ngIf="hasError('produit')">{{getErrorMessage('produit')}}</mat-error>
+      </mat-form-field>
+    </div>
+
     <mat-form-field class="full-width">
-      <mat-label>Status</mat-label>
-      <mat-select [(ngModel)]="reclamation.statut" name="statut">
-        <mat-option value="Pending">Pending</mat-option>
-        <mat-option value="Resolved">Resolved</mat-option>
-        <mat-option value="Rejected">Rejected</mat-option>
+      <mat-label>Note</mat-label>
+      <input matInput type="number" min="0" max="5" [(ngModel)]="reclamation.note" name="note"
+             [errorStateMatcher]="matcher"
+             (ngModelChange)="onFieldChange('note')" />
+      <mat-hint>Rate from 0 to 5</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field class="full-width">
+      <mat-label>Assigned Agent</mat-label>
+      <mat-select [(ngModel)]="reclamation.agentId" name="agentId"
+                [errorStateMatcher]="matcher"
+                (selectionChange)="onFieldChange('agentId')">
+        <mat-option [value]="null">None</mat-option>
+        <mat-option *ngFor="let agent of agents" [value]="agent.id">
+          {{agent.nom}} {{agent.prenom}} ({{agent.competence}})
+        </mat-option>
       </mat-select>
     </mat-form-field>
-  
-    <mat-form-field class="full-width">
-      <mat-label>Rating</mat-label>
-      <input type="number" matInput [(ngModel)]="reclamation.note" name="note" />
-    </mat-form-field>
-  
-    <mat-form-field class="full-width">
-      <mat-label>Client ID</mat-label>
-      <input type="number" matInput [(ngModel)]="reclamation.clientId" name="clientId" />
-    </mat-form-field>
-  
-    <button mat-raised-button color="primary" type="submit">Save</button>
   </form>
-  
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()" [disabled]="isSubmitting">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="isSubmitting">
+    <div class="button-content">
+      <mat-icon *ngIf="!isSubmitting">save</mat-icon>
+      <app-loading-spinner *ngIf="isSubmitting" [diameter]="20"></app-loading-spinner>
+      <span>{{reclamation.id ? 'Update' : 'Create'}}</span>
+    </div>
+  </button>
+</mat-dialog-actions>

@@ -115,9 +115,6 @@ export class SatisfactionReportComponent implements OnInit, AfterViewInit {
       this.totalAgents = agents.length;
       this.activeAgents = agents.filter((a: Agent) => a.actif).length;
       this.totalClients = clients.length;
-      this.newClients = clients.filter((c: Client) =>
-        c.dateCreation && new Date(c.dateCreation).getTime() > new Date().getTime() - 30 * 24 * 60 * 60 * 1000
-      ).length;
 
       const satisfactionScores = reclamations.filter((r: Reclamation) => r.note).map((r: Reclamation) => r.note);
       this.avgSatisfaction = satisfactionScores.reduce((a: number, b: number) => a + b, 0) / satisfactionScores.length || 0;
