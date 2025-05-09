@@ -5,11 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.saaadouni.yassine.backend_gere.dto.ClientDTO;
 import tn.saaadouni.yassine.backend_gere.mapper.ClientMapper;
-import tn.saaadouni.yassine.backend_gere.models.Client;
 import tn.saaadouni.yassine.backend_gere.services.ClientService;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
