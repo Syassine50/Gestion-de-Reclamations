@@ -1,6 +1,10 @@
 package tn.saaadouni.yassine.backend_gere.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.saaadouni.yassine.backend_gere.dto.AgentSAVDTO;
@@ -12,7 +16,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/agents")
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://localhost:4200")
 public class AgentSAVController {
 
     @Autowired
@@ -75,5 +79,24 @@ public class AgentSAVController {
                 .map(agentSAVMapper::toDto)
                 .collect(Collectors.toList())
         );
+    }
+
+    @GetMapping("/paginated")
+    public ResponseEntity<Page<AgentSAV>> getAllAgentsPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return ResponseEntity.ok(agentSAVService.getAllAgents(pageable));
+    }
+
+    @GetMapping("/paginated/competence/{competence}")
+    public ResponseEntity<Page<AgentSAV>> getAgentsByCompetencePaginated(
+            @PathVariable String competence,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
+        return ResponseEntity.ok(agentSAVService.getAgentsByCompetence(competence, pageable));
     }
 }
