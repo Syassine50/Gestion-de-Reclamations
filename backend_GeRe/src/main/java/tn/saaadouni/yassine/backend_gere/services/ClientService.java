@@ -34,7 +34,6 @@ public class ClientService {
 
     public Client updateClient(Client client) {
         validateClient(client);
-        Client existingClient = getClientById(client.getId());
         
         // Vérifier les doublons d'email et de téléphone sauf pour le client actuel
         Optional<Client> clientWithEmail = clientRepository.findByEmail(client.getEmail());
