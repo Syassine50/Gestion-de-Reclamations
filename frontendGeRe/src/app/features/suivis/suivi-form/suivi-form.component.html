@@ -1,24 +1,51 @@
-<form (ngSubmit)="onSubmit()" #form="ngForm">
-    <mat-form-field class="full-width">
-      <mat-label>Action Taken</mat-label>
-      <input matInput required [(ngModel)]="suivi.action" name="action" />
+<h2 mat-dialog-title>Add Follow-up</h2>
+
+<mat-dialog-content>
+  <form #suiviForm="ngForm" (ngSubmit)="onSubmit()">
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Status Update</mat-label>
+      <mat-select [(ngModel)]="suivi.statut" name="statut" required
+                [errorStateMatcher]="matcher"
+                (selectionChange)="onStatusChange()">
+        <mat-option *ngFor="let status of statuses" [value]="status.value">
+          {{ status.label }}
+        </mat-option>
+      </mat-select>
+      <mat-icon matSuffix>update</mat-icon>
+      <mat-error *ngIf="hasError('statut')">{{ getErrorMessage('statut') }}</mat-error>
     </mat-form-field>
-  
-    <mat-form-field class="full-width">
-      <mat-label>Date</mat-label>
-      <input matInput type="date" [(ngModel)]="suivi.date" name="date" />
+
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Comment</mat-label>
+      <textarea matInput [(ngModel)]="suivi.commentaire" name="commentaire" required
+                rows="3" placeholder="Enter your comment"
+                [errorStateMatcher]="matcher"
+                (input)="onFieldChange('commentaire')"></textarea>
+      <mat-icon matSuffix>comment</mat-icon>
+      <mat-hint>Describe the progress or updates made</mat-hint>
+      <mat-error *ngIf="hasError('commentaire')">{{ getErrorMessage('commentaire') }}</mat-error>
     </mat-form-field>
-  
-    <mat-form-field class="full-width">
-      <mat-label>Reclamation ID</mat-label>
-      <input matInput type="number" [(ngModel)]="suivi.reclamationId" name="reclamationId" />
+
+    <mat-form-field *ngIf="suivi.statut === 'RESOLUE'" appearance="outline" class="full-width">
+      <mat-label>Solution</mat-label>
+      <textarea matInput [(ngModel)]="suivi.solution" name="solution" required
+                rows="3" placeholder="Describe the solution implemented"
+                [errorStateMatcher]="matcher"
+                (input)="onFieldChange('solution')"></textarea>
+      <mat-icon matSuffix>check_circle</mat-icon>
+      <mat-hint>Describe how the issue was resolved</mat-hint>
+      <mat-error *ngIf="hasError('solution')">{{ getErrorMessage('solution') }}</mat-error>
     </mat-form-field>
-  
-    <mat-form-field class="full-width">
-      <mat-label>Agent ID</mat-label>
-      <input matInput type="number" [(ngModel)]="suivi.agentId" name="agentId" />
-    </mat-form-field>
-  
-    <button mat-raised-button color="primary" type="submit">Save</button>
   </form>
-  
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()" [disabled]="isSubmitting">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="isSubmitting">
+    <div class="button-content">
+      <mat-icon *ngIf="!isSubmitting">save</mat-icon>
+      <app-loading-spinner *ngIf="isSubmitting" [diameter]="20"></app-loading-spinner>
+      <span>Save</span>
+    </div>
+  </button>
+</mat-dialog-actions>

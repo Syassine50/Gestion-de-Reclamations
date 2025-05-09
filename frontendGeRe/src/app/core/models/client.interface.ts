@@ -3,4 +3,6 @@ export interface Client {
     nom: string;
     email: string;
     telephone: string;
+    dateCreation?: string;
+    nombreReclamations?: number;
 }

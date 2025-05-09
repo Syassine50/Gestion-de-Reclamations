@@ -8,7 +8,7 @@ import { routes } from './app/app.routes';
 bootstrapApplication(AppComponent, {
   providers: [
     provideHttpClient(),
-    provideAnimations(),
+    provideAnimations(), // ✅ Enables Angular Material animations (required for menus, tooltips, dialogs)
     provideRouter(routes)
   ]
 });
