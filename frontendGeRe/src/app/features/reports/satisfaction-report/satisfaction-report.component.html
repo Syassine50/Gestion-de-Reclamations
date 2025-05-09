@@ -1,0 +1,46 @@
+<mat-toolbar color="primary">Tableau de bord</mat-toolbar>
+
+<div class="dashboard-wrapper">
+  <h1 class="dashboard-title">Bienvenue dans votre espace de suivi</h1>
+
+  <div class="dashboard-grid">
+    <mat-card class="card blue">
+      <mat-icon class="card-icon">star</mat-icon>
+      <div class="card-data">
+        <div class="card-label">Satisfaction</div>
+        <div class="card-value">{{ avgSatisfaction | number:'1.1-2' }}/5</div>
+      </div>
+    </mat-card>
+
+    <mat-card class="card green">
+      <mat-icon class="card-icon">group</mat-icon>
+      <div class="card-data">
+        <div class="card-label">Clients</div>
+        <div class="card-value">{{ totalClients }}</div>
+      </div>
+    </mat-card>
+
+    <mat-card class="card orange">
+      <mat-icon class="card-icon">support_agent</mat-icon>
+      <div class="card-data">
+        <div class="card-label">Agents</div>
+        <div class="card-value">{{ totalAgents }}</div>
+      </div>
+    </mat-card>
+
+    <mat-card class="card red">
+      <mat-icon class="card-icon">report</mat-icon>
+      <div class="card-data">
+        <div class="card-label">Réclamations</div>
+        <div class="card-value">{{ totalReclamations }}</div>
+      </div>
+    </mat-card>
+  </div>
+  
+  <div class="chart-section">
+    <h2>Répartition des réclamations par statut</h2>
+    <canvas #pieCanvas></canvas>
+
+  </div>
+  
+</div>

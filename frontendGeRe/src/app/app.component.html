@@ -1,0 +1,23 @@
+<mat-toolbar color="primary" class="navbar">
+  <span class="logo">📋 GeRe</span>
+
+  <span class="spacer"></span>
+
+  <a mat-button routerLink="/dashboard" routerLinkActive="active">
+    <mat-icon>dashboard</mat-icon> Dashboard
+  </a>
+  <a mat-button routerLink="/clients" routerLinkActive="active">
+    <mat-icon>group</mat-icon> Clients
+  </a>
+  <a mat-button routerLink="/agents" routerLinkActive="active">
+    <mat-icon>support_agent</mat-icon> Agents
+  </a>
+  <a mat-button routerLink="/reclamations" routerLinkActive="active">
+    <mat-icon>report_problem</mat-icon> Réclamations
+  </a>
+  <a mat-button routerLink="/suivis" routerLinkActive="active">
+    <mat-icon>timeline</mat-icon> Suivis
+  </a>
+</mat-toolbar>
+
+<router-outlet></router-outlet>
