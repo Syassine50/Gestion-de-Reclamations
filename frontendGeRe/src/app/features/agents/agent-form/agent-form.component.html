@@ -1,0 +1,19 @@
+<form (ngSubmit)="onSubmit()" #form="ngForm">
+    <mat-form-field class="full-width">
+      <mat-label>Last Name</mat-label>
+      <input matInput required [(ngModel)]="agent.nom" name="nom" />
+    </mat-form-field>
+  
+    <mat-form-field class="full-width">
+      <mat-label>First Name</mat-label>
+      <input matInput required [(ngModel)]="agent.prenom" name="prenom" />
+    </mat-form-field>
+  
+    <mat-form-field class="full-width">
+      <mat-label>Competence</mat-label>
+      <input matInput required [(ngModel)]="agent.competence" name="competence" />
+    </mat-form-field>
+  
+    <button mat-raised-button color="primary" type="submit">Save</button>
+  </form>
+  

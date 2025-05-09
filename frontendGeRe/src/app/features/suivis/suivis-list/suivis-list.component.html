@@ -1,0 +1,41 @@
+<mat-toolbar color="accent">Suivi Reclamations</mat-toolbar>
+
+<mat-card>
+  <table mat-table [dataSource]="suivis" class="mat-elevation-z8" *ngIf="suivis.length">
+
+    <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef>Action</th>
+      <td mat-cell *matCellDef="let s">{{ s.action }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="date">
+      <th mat-header-cell *matHeaderCellDef>Date</th>
+      <td mat-cell *matCellDef="let s">{{ s.date }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="reclamationId">
+      <th mat-header-cell *matHeaderCellDef>Reclamation ID</th>
+      <td mat-cell *matCellDef="let s">{{ s.reclamationId }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="agentId">
+      <th mat-header-cell *matHeaderCellDef>Agent ID</th>
+      <td mat-cell *matCellDef="let s">{{ s.agentId }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let s">
+        <button mat-icon-button color="warn" (click)="deleteSuivi(s.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+
+  <p *ngIf="!suivis.length" class="no-data">No suivi records found.</p>
+</mat-card>

@@ -1,0 +1,41 @@
+<mat-toolbar color="primary">Clients</mat-toolbar>
+
+<mat-card>
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Search</mat-label>
+    <input matInput [(ngModel)]="search" (input)="applyFilter()" placeholder="Search by name or email" />
+  </mat-form-field>
+
+  <table mat-table [dataSource]="filteredClients" class="mat-elevation-z8" *ngIf="filteredClients.length">
+
+    <ng-container matColumnDef="nom">
+      <th mat-header-cell *matHeaderCellDef>Name</th>
+      <td mat-cell *matCellDef="let client">{{ client.nom }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef>Email</th>
+      <td mat-cell *matCellDef="let client">{{ client.email }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="telephone">
+      <th mat-header-cell *matHeaderCellDef>Phone</th>
+      <td mat-cell *matCellDef="let client">{{ client.telephone }}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let client">
+        <button mat-icon-button color="primary"><mat-icon>edit</mat-icon></button>
+        <button mat-icon-button color="warn" (click)="deleteClient(client.id)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+
+  <p *ngIf="!filteredClients.length" class="no-data">No clients found.</p>
+</mat-card>

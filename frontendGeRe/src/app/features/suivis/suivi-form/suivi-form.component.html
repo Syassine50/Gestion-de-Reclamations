@@ -1,0 +1,24 @@
+<form (ngSubmit)="onSubmit()" #form="ngForm">
+    <mat-form-field class="full-width">
+      <mat-label>Action Taken</mat-label>
+      <input matInput required [(ngModel)]="suivi.action" name="action" />
+    </mat-form-field>
+  
+    <mat-form-field class="full-width">
+      <mat-label>Date</mat-label>
+      <input matInput type="date" [(ngModel)]="suivi.date" name="date" />
+    </mat-form-field>
+  
+    <mat-form-field class="full-width">
+      <mat-label>Reclamation ID</mat-label>
+      <input matInput type="number" [(ngModel)]="suivi.reclamationId" name="reclamationId" />
+    </mat-form-field>
+  
+    <mat-form-field class="full-width">
+      <mat-label>Agent ID</mat-label>
+      <input matInput type="number" [(ngModel)]="suivi.agentId" name="agentId" />
+    </mat-form-field>
+  
+    <button mat-raised-button color="primary" type="submit">Save</button>
+  </form>
+  
