@@ -81,22 +81,5 @@ public class AgentSAVController {
         );
     }
 
-    @GetMapping("/paginated")
-    public ResponseEntity<Page<AgentSAV>> getAllAgentsPaginated(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sortBy) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        return ResponseEntity.ok(agentSAVService.getAllAgents(pageable));
-    }
-
-    @GetMapping("/paginated/competence/{competence}")
-    public ResponseEntity<Page<AgentSAV>> getAgentsByCompetencePaginated(
-            @PathVariable String competence,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sortBy) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sortBy));
-        return ResponseEntity.ok(agentSAVService.getAgentsByCompetence(competence, pageable));
-    }
+    
 }
