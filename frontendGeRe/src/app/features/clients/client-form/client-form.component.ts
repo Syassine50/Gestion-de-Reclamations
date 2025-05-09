@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import { Component, Inject } from '@angular/core';
 import { MATERIAL_IMPORTS } from '../../../../material-imports';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { Client } from '../../../core/models/client.interface';
@@ -6,7 +6,8 @@ import { LoadingSpinnerComponent } from '../../../shared/components/loading-spin
 import { InstantErrorStateMatcher } from '../../../shared/utils/error-state.matcher';
 import { ClientService } from '../../../core/services/client.service';
 import { NotificationService } from '../../../core/services/notification.service';
-import { catchError, finalize, switchMap, of, Observable } from 'rxjs';
+import { catchError, finalize } from 'rxjs/operators';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-client-form',
@@ -15,55 +16,80 @@ import { catchError, finalize, switchMap, of, Observable } from 'rxjs';
   templateUrl: './client-form.component.html',
   styleUrls: ['./client-form.component.scss']
 })
-export class ClientFormComponent implements OnInit {
+export class ClientFormComponent {
   client: Client;
   isSubmitting = false;
   errors: { [key: string]: string } = {};
   matcher = new InstantErrorStateMatcher();
-  originalEmail: string = '';
-  originalPhone: string = '';
 
   constructor(
     public dialogRef: MatDialogRef<ClientFormComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { client: Client },
     private clientService: ClientService,
     private notificationService: NotificationService
-  ) {
+  ) 
+  {
     this.client = { ...data.client };
-  }
-
-  ngOnInit(): void {
-    this.originalEmail = this.client.email;
-    this.originalPhone = this.client.telephone;
   }
 
   onSubmit(): void {
     this.errors = {};
+
     if (!this.validateForm()) return;
 
     this.isSubmitting = true;
-    this.saveClient().pipe(
+    const operation = this.client.id
+      ? this.clientService.update(this.client.id, this.client)
+      : this.clientService.create(this.client);
+
+    operation.pipe(
       catchError(err => {
-        this.handleApiError(err);
+        if (err.error) {
+          if (typeof err.error === 'string') {
+            // Handle duplicate email error but don't terminate operation
+            if (err.error.includes('Un client avec cet email existe déjà')) {
+              this.errors['email'] = 'This email is already registered';
+              // If we're handling a duplicate email, we should try to create a new client
+              if (!this.client.id) {
+                // Clear the email field to allow the user to enter a new one
+                this.client.email = '';
+              }
+            } 
+            // Handle duplicate phone error but don't terminate operation
+            else if (err.error.includes('Un client avec ce numéro de téléphone existe déjà')) {
+              this.errors['telephone'] = 'This phone number is already registered';
+              // If we're handling a duplicate phone, we should try to create a new client
+              if (!this.client.id) {
+                // Clear the phone field to allow the user to enter a new one
+                this.client.telephone = '';
+              }
+            } else {
+              this.notificationService.error(err.error);
+            }
+          } else if (err.error.message) {
+            this.notificationService.error(err.error.message);
+          } else {
+            this.notificationService.error('An error occurred while saving the client');
+          }
+        } else {
+          this.notificationService.error('An error occurred while saving the client');
+        }
+        // Return null to indicate there was an error, but don't continue with the success flow
         return of(null);
       }),
-      finalize(() => this.isSubmitting = false)
+      finalize(() => {
+        this.isSubmitting = false;
+      })
     ).subscribe(result => {
+      // Only close dialog and show success if there was a result (no error occurred)
       if (result) {
         this.notificationService.success(
           this.client.id ? 'Client updated successfully' : 'Client created successfully'
         );
         this.dialogRef.close(result);
       }
+      // If there was an error (result is null), keep the dialog open so user can correct it
     });
-  }
-
-  saveClient(): Observable<any> {
-    if (this.client.id) {
-      return this.clientService.update(this.client.id, this.client);
-    } else {
-      return this.clientService.create(this.client);
-    }
   }
 
   validateForm(): boolean {
@@ -122,30 +148,6 @@ export class ClientFormComponent implements OnInit {
   onFieldChange(field: string): void {
     if (this.errors[field]) {
       delete this.errors[field];
-    }
-  }
-
-  private handleApiError(err: any): void {
-    if (err.error) {
-      if (typeof err.error === 'string') {
-        if (err.error.includes('Un client avec cet email existe déjà')) {
-          this.errors['email'] = 'This email is already registered';
-        } else if (err.error.includes('Un client avec ce numéro de téléphone existe déjà')) {
-          this.errors['telephone'] = 'This phone number is already registered';
-        } else {
-          this.notificationService.error(err.error);
-        }
-      } else if (err.error.message) {
-        this.notificationService.error(err.error.message);
-      } else {
-        this.notificationService.error(
-          `An error occurred while ${this.client.id ? 'updating' : 'creating'} the client`
-        );
-      }
-    } else {
-      this.notificationService.error(
-        `An error occurred while ${this.client.id ? 'updating' : 'creating'} the client`
-      );
     }
   }
 }
