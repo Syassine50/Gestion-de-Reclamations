@@ -11,6 +11,5 @@ export const routes: Routes = [
   { path: 'clients', component: ClientsListComponent },
   { path: 'agents', component: AgentsListComponent },
   { path: 'reclamations', component: ReclamationsListComponent },
-  { path: 'suivis', component: SuivisListComponent },
-  { path: '**', redirectTo: 'dashboard' }
+  { path: 'suivis', component: SuivisListComponent }
 ];

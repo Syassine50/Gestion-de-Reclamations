@@ -1,19 +1,40 @@
-<form (ngSubmit)="onSubmit()" #form="ngForm">
+<h2 mat-dialog-title>{{client.id ? 'Edit' : 'Add'}} Client</h2>
+
+<mat-dialog-content>
+  <form (ngSubmit)="onSubmit()" #form="ngForm">
     <mat-form-field class="full-width">
       <mat-label>Name</mat-label>
-      <input matInput required [(ngModel)]="client.nom" name="nom" />
+      <input matInput required [(ngModel)]="client.nom" name="nom" 
+             [errorStateMatcher]="matcher"
+             (ngModelChange)="onFieldChange('nom')" />
+      <mat-error *ngIf="hasError('nom')">{{getErrorMessage('nom')}}</mat-error>
     </mat-form-field>
   
     <mat-form-field class="full-width">
       <mat-label>Email</mat-label>
-      <input matInput required [(ngModel)]="client.email" name="email" />
+      <input matInput required type="email" [(ngModel)]="client.email" name="email" 
+             [errorStateMatcher]="matcher"
+             (ngModelChange)="onFieldChange('email')" />
+      <mat-error *ngIf="hasError('email')">{{getErrorMessage('email')}}</mat-error>
     </mat-form-field>
   
     <mat-form-field class="full-width">
       <mat-label>Telephone</mat-label>
-      <input matInput required [(ngModel)]="client.telephone" name="telephone" />
+      <input matInput required [(ngModel)]="client.telephone" name="telephone" 
+             [errorStateMatcher]="matcher"
+             (ngModelChange)="onFieldChange('telephone')" />
+      <mat-error *ngIf="hasError('telephone')">{{getErrorMessage('telephone')}}</mat-error>
     </mat-form-field>
-  
-    <button mat-raised-button color="primary" type="submit">Save</button>
   </form>
-  
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="onCancel()" [disabled]="isSubmitting">Cancel</button>
+  <button mat-raised-button color="primary" (click)="onSubmit()" [disabled]="isSubmitting">
+    <div class="button-content">
+      <mat-icon *ngIf="!isSubmitting">save</mat-icon>
+      <app-loading-spinner *ngIf="isSubmitting" [diameter]="20"></app-loading-spinner>
+      <span>{{client.id ? 'Update' : 'Create'}}</span>
+    </div>
+  </button>
+</mat-dialog-actions>

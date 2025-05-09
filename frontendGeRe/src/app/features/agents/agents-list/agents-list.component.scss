@@ -1,16 +1,71 @@
 .full-width {
-    width: 100%;
-    margin-bottom: 1rem;
-  }
+  width: 100%;
+  margin-bottom: 1rem;
+  flex: 1;
+}
+
+mat-card {
+  margin: 2rem;
+  padding: 1rem;
+}
+
+.table-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+table {
+  width: 100%;
+}
+
+.specialty-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  color: white;
   
-  mat-card {
-    margin: 1rem;
-    padding: 1rem;
+  &:contains('Technical Support') {
+    background-color: #2196f3;
   }
-  
-  .no-data {
-    text-align: center;
-    color: gray;
-    margin-top: 1rem;
+  &:contains('Customer Service') {
+    background-color: #4caf50;
   }
-  
+  &:contains('Sales') {
+    background-color: #ff9800;
+  }
+  &:contains('Billing') {
+    background-color: #9c27b0;
+  }
+  &:contains('Product Support') {
+    background-color: #00bcd4;
+  }
+}
+
+.mat-column-actions {
+  width: 100px;
+  text-align: center;
+}
+
+.mat-column-specialite {
+  min-width: 120px;
+}
+
+.mat-column-email {
+  min-width: 180px;
+}
+
+.no-data {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  font-style: italic;
+  margin-top: 1rem;
+}
+
+button[mat-icon-button] {
+  margin: 0 4px;
+}

@@ -1,16 +1,39 @@
 .full-width {
-    width: 100%;
-    margin-bottom: 1rem;
-  }
-  
-  mat-card {
-    margin: 1rem;
-    padding: 1rem;
-  }
-  
-  .no-data {
-    text-align: center;
-    color: gray;
-    margin-top: 1rem;
-  }
-  
+  width: 100%;
+  margin-bottom: 1rem;
+  flex: 1;
+}
+
+mat-card {
+  margin: 2rem;
+  padding: 1rem;
+}
+
+.table-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+table {
+  width: 100%;
+}
+
+.mat-column-actions {
+  width: 100px;
+  text-align: center;
+}
+
+.no-data {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  font-style: italic;
+  margin-top: 1rem;
+}
+
+button[mat-icon-button] {
+  margin: 0 4px;
+}

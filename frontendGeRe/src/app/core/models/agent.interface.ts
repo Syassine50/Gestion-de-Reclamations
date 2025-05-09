@@ -3,5 +3,6 @@ export interface Agent {
     nom: string;
     prenom: string;
     competence: string;
-  }
-  
+    actif?: boolean;
+    nombreReclamations?: number;
+}

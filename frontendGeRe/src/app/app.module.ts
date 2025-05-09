@@ -18,6 +18,7 @@ import { ReportsModule } from './features/reports/reports.module';
 // Angular Material Shared Modules
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
+import { MatMenu, MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [
@@ -33,10 +34,11 @@ import { MatButtonModule } from '@angular/material/button';
     // Material (for nav)
     MatToolbarModule,
     MatButtonModule,
-
+    MatMenuModule,
     // Feature Modules
     ClientsModule,
     AgentsModule,
+    MatMenu,
     ReclamationsModule,
     SuivisModule,
     ReportsModule

@@ -1,11 +1,130 @@
 mat-card {
-    margin: 1rem;
-    padding: 1rem;
+  margin: 2rem;
+  padding: 1rem;
+}
+
+.table-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.full-width {
+  flex: 1;
+}
+
+.filters-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.search-container {
+  display: flex;
+  gap: 1rem;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.search-field {
+  min-width: 300px;
+  flex: 2;
+}
+
+mat-form-field {
+  flex: 1;
+  min-width: 200px;
+}
+
+table {
+  width: 100%;
+}
+
+.description-cell {
+  max-width: 300px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.status-badge, .priority-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: white;
+  display: inline-block;
+  min-width: 80px;
+  text-align: center;
+}
+
+// Status badges
+.status-badge {
+  &.en_attente {
+    background-color: #f44336;
   }
-  
-  .no-data {
-    text-align: center;
-    color: gray;
-    margin-top: 1rem;
+  &.en_cours {
+    background-color: #ff9800;
   }
-  
+  &.resolue {
+    background-color: #4caf50;
+  }
+}
+
+// Priority badges
+.priority-badge {
+  &.haute {
+    background-color: #f44336;
+  }
+  &.moyenne {
+    background-color: #ff9800;
+  }
+  &.basse {
+    background-color: #4caf50;
+  }
+}
+
+.mat-column-actions {
+  width: 140px;
+  text-align: center;
+}
+
+.mat-column-statut, .mat-column-priorite {
+  width: 120px;
+}
+
+.mat-column-dateReclamation {
+  width: 100px;
+}
+
+.no-data {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  font-style: italic;
+}
+
+button[mat-icon-button] {
+  margin: 0 4px;
+}
+
+// Responsive adjustments
+@media (max-width: 960px) {
+  .search-container {
+    flex-direction: column;
+    
+    .search-field, mat-form-field {
+      width: 100%;
+      min-width: unset;
+    }
+  }
+
+  .description-cell {
+    max-width: 200px;
+  }
+}
