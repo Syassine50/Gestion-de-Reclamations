@@ -12,7 +12,8 @@ import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-reclamations-list',
   standalone: true,
-  imports: [MATERIAL_IMPORTS],
+  imports: [
+    MATERIAL_IMPORTS],
   templateUrl: './reclamations-list.component.html',
   styleUrls: ['./reclamations-list.component.scss']
 })

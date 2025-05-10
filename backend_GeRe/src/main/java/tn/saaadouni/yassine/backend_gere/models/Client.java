@@ -23,6 +23,9 @@ public class Client {
 
     @OneToMany(mappedBy = "client")
     private List<Reclamation> listerec = new ArrayList<Reclamation>();
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private AppUser user;
 
     // getters et setters
 }

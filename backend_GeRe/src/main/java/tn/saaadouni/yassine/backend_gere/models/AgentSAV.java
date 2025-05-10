@@ -25,5 +25,8 @@ public class AgentSAV {
 
     @OneToMany(mappedBy = "employe")
     private List<SuiviReclamation> listeSuivi = new ArrayList<SuiviReclamation>();
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private AppUser user;
 
 }

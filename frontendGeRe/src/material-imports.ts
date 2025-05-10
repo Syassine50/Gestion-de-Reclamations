@@ -3,7 +3,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
+import { MatCard, MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
@@ -16,6 +16,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 import { LoadingSpinnerComponent } from './app/shared/components/loading-spinner/loading-spinner.component';
+import {  MatMenuModule } from '@angular/material/menu';
+import { MatTooltip } from '@angular/material/tooltip';
 export const MATERIAL_IMPORTS = [
   CommonModule,
   FormsModule,
@@ -31,6 +33,9 @@ export const MATERIAL_IMPORTS = [
   MatDialogModule,
   MatSidenavModule,
   MatListModule,
+  MatMenuModule,
   MatProgressSpinnerModule,
-  LoadingSpinnerComponent
+  LoadingSpinnerComponent,
+  MatTooltip,
+  MatCard,
 ];
