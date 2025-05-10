@@ -1,13 +1,23 @@
 package tn.saaadouni.yassine.backend_gere.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import tn.saaadouni.yassine.backend_gere.dto.LoginDTO;
+import tn.saaadouni.yassine.backend_gere.dto.LoginResponse;
 import tn.saaadouni.yassine.backend_gere.dto.RegistrationDTO;
+import tn.saaadouni.yassine.backend_gere.dto.UserDto;
 import tn.saaadouni.yassine.backend_gere.models.*;
 import tn.saaadouni.yassine.backend_gere.repositories.AgentSAVRepository;
 import tn.saaadouni.yassine.backend_gere.repositories.AppUserRepository;
 import tn.saaadouni.yassine.backend_gere.repositories.ClientRepository;
+import tn.saaadouni.yassine.backend_gere.Security.JwtUtil;
 
 @Service
 public class AuthService {
@@ -46,4 +56,29 @@ public class AuthService {
             clientRepository.save(client);
         }
     }
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+
+    @Autowired
+    private JwtService jwtService;
+
+    public ResponseEntity<LoginResponse> login(LoginDTO request) {
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getUsername(),
+                            request.getPassword()
+                    )
+            );
+            var user = appUserRepository.findByUsername(request.getUsername())
+                    .orElseThrow();
+            var jwtToken = jwtService.generateToken(user);
+
+            return ResponseEntity.ok(LoginResponse.builder().user(UserDto.fromUser(user)).token(jwtToken).build());
+        } catch (AuthenticationException e) {
+            throw new RuntimeException("Invalid username or password");
+        }
+    }
+
 }
