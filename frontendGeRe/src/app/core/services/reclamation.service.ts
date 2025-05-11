@@ -25,7 +25,14 @@ export class ReclamationService {
   }
 
   getById(id: number): Observable<Reclamation> {
-    return this.http.get<Reclamation>(`${this.baseUrl}/${id}`);
+
+    const token = localStorage.getItem('token'); 
+    let headers = new HttpHeaders( );
+    // let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    if (token) {
+      headers = headers.append('Authorization', `Bearer ${encodeURIComponent(token)}`);
+    }
+    return this.http.get<Reclamation>(`${this.baseUrl}/${id}`,{ headers, withCredentials: true });
   }
 
   create(reclamation: Reclamation): Observable<Reclamation> {
@@ -41,42 +48,112 @@ export class ReclamationService {
   }
 
   update(id: number, reclamation: Reclamation): Observable<Reclamation> {
-    return this.http.put<Reclamation>(`${this.baseUrl}/${id}`, reclamation);
+
+    const token = localStorage.getItem('token'); 
+    let headers = new HttpHeaders( );
+    // let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    if (token) {
+      headers = headers.append('Authorization', `Bearer ${encodeURIComponent(token)}`);
+    }
+    return this.http.put<Reclamation>(`${this.baseUrl}/${id}`, reclamation,{ headers, withCredentials: true });
   }
 
   delete(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+
+    const token = localStorage.getItem('token'); 
+    let headers = new HttpHeaders( );
+    // let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    if (token) {
+      headers = headers.append('Authorization', `Bearer ${encodeURIComponent(token)}`);
+    }
+    return this.http.delete<void>(`${this.baseUrl}/${id}`,{ headers, withCredentials: true });
   }
 
   getByClient(clientId: number): Observable<Reclamation[]> {
-    return this.http.get<Reclamation[]>(`${this.baseUrl}/client/${clientId}`);
+
+    const token = localStorage.getItem('token'); 
+    let headers = new HttpHeaders( );
+    // let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    if (token) {
+      headers = headers.append('Authorization', `Bearer ${encodeURIComponent(token)}`);
+    }
+    return this.http.get<Reclamation[]>(`${this.baseUrl}/client/${clientId}`,{ headers, withCredentials: true });
   }
 
   getByAgent(agentId: number): Observable<Reclamation[]> {
-    return this.http.get<Reclamation[]>(`${this.baseUrl}/agent/${agentId}`);
+
+    const token = localStorage.getItem('token'); 
+    let headers = new HttpHeaders( );
+    // let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    if (token) {
+      headers = headers.append('Authorization', `Bearer ${encodeURIComponent(token)}`);
+    }
+    return this.http.get<Reclamation[]>(`${this.baseUrl}/agent/${agentId}`,{ headers, withCredentials: true });
   }
 
   getByStatut(statut: string): Observable<Reclamation[]> {
-    return this.http.get<Reclamation[]>(`${this.baseUrl}/statut/${statut}`);
+
+    const token = localStorage.getItem('token'); 
+    let headers = new HttpHeaders( );
+    // let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    if (token) {
+      headers = headers.append('Authorization', `Bearer ${encodeURIComponent(token)}`);
+    }
+    return this.http.get<Reclamation[]>(`${this.baseUrl}/statut/${statut}`,{ headers, withCredentials: true });
   }
 
   getByProduit(produit: string): Observable<Reclamation[]> {
-    return this.http.get<Reclamation[]>(`${this.baseUrl}/produit/${produit}`);
+
+    const token = localStorage.getItem('token'); 
+    let headers = new HttpHeaders( );
+    // let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    if (token) {
+      headers = headers.append('Authorization', `Bearer ${encodeURIComponent(token)}`);
+    }
+    return this.http.get<Reclamation[]>(`${this.baseUrl}/produit/${produit}`,{ headers, withCredentials: true });
   }
 
   getByNote(note: number): Observable<Reclamation[]> {
-    return this.http.get<Reclamation[]>(`${this.baseUrl}/note/${note}`);
+
+    const token = localStorage.getItem('token'); 
+    let headers = new HttpHeaders( );
+    // let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    if (token) {
+      headers = headers.append('Authorization', `Bearer ${encodeURIComponent(token)}`);
+    }
+    return this.http.get<Reclamation[]>(`${this.baseUrl}/note/${note}`,{ headers, withCredentials: true });
   }
 
   getByDateRange(dateDebut: string, dateFin: string): Observable<Reclamation[]> {
-    return this.http.get<Reclamation[]>(`${this.baseUrl}/date?dateDebut=${dateDebut}&dateFin=${dateFin}`);
+
+    const token = localStorage.getItem('token'); 
+    let headers = new HttpHeaders( );
+    // let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    if (token) {
+      headers = headers.append('Authorization', `Bearer ${encodeURIComponent(token)}`);
+    }
+    return this.http.get<Reclamation[]>(`${this.baseUrl}/date?dateDebut=${dateDebut}&dateFin=${dateFin}`,{ headers, withCredentials: true });
   }
 
   assignAgent(reclamationId: number, agentId: number): Observable<Reclamation> {
-    return this.http.put<Reclamation>(`${this.baseUrl}/${reclamationId}/assigner/${agentId}`, {});
+
+    const token = localStorage.getItem('token'); 
+    let headers = new HttpHeaders( );
+    // let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    if (token) {
+      headers = headers.append('Authorization', `Bearer ${encodeURIComponent(token)}`);
+    }
+    return this.http.put<Reclamation>(`${this.baseUrl}/${reclamationId}/assigner/${agentId}`, {},{ headers, withCredentials: true });
   }
 
   getSatisfaction(): Observable<number> {
-    return this.http.get<number>(`${this.baseUrl}/satisfaction`);
+
+    const token = localStorage.getItem('token'); 
+    let headers = new HttpHeaders( );
+    // let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    if (token) {
+      headers = headers.append('Authorization', `Bearer ${encodeURIComponent(token)}`);
+    }
+    return this.http.get<number>(`${this.baseUrl}/satisfaction`,{ headers, withCredentials: true });
   }
 }

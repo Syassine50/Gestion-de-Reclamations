@@ -3,6 +3,8 @@ import {CommonModule} from '@angular/common';
 import {Router, RouterLink} from '@angular/router';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {AuthService} from '../../core/services/auth.service';
+import { MATERIAL_IMPORTS } from '../../../material-imports';
+import { AppComponent } from '../../app.component';
 
 @Component({
   selector: 'app-login',
@@ -10,7 +12,8 @@ import {AuthService} from '../../core/services/auth.service';
   styleUrl: './login.component.scss',
   imports: [
     CommonModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MATERIAL_IMPORTS
   ],
 })
 export class LoginComponent {
@@ -20,7 +23,7 @@ export class LoginComponent {
   message = '';
   error = '';
 
-  constructor(private fb: FormBuilder, private authService: AuthService , private router: Router) {
+  constructor(private fb: FormBuilder, private authService: AuthService , private router: Router,private app: AppComponent) {
     this.registerForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
@@ -42,7 +45,7 @@ export class LoginComponent {
       next: (res: any) => {
         console.log('SUCCESS RESPONSE:', res); // Debug
         this.message = res;
-        alert(res);
+        this.app.isAuthenticated();
         this.router.navigate(['/dashboard']);
       },
       error: (err) => {

@@ -17,7 +17,7 @@ export const routes: Routes = [
   { path: 'suivis', component: SuivisListComponent, canActivate: [AuthGuard] },
   { path: 'register', component: RegisterComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'dashboard', component: SatisfactionReportComponent },
+  { path: 'dashboard', component: SatisfactionReportComponent , canActivate: [AuthGuard] },
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: '**', redirectTo: 'dashboard' }
 ];

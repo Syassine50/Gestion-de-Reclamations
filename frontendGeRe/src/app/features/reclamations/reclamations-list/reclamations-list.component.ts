@@ -27,7 +27,14 @@ export class ReclamationsListComponent implements OnInit {
     private reclamationService: ReclamationService,
     private dialog: MatDialog
   ) {}
+  // displayedColumns: string[] = ['produit', 'description', 'statut', 'note', 'dateReclamation', 'actions'];
 
+  applyFilter() {
+    const value = this.search?.trim().toLowerCase() || '';
+    this.filteredReclamations = this.reclamations.filter(r =>
+      Object.values(r).some(val => val?.toString().toLowerCase().includes(value))
+    );
+  }
   ngOnInit(): void {
     this.loadReclamations();
   }
@@ -39,14 +46,14 @@ export class ReclamationsListComponent implements OnInit {
     });
   }
 
-  applyFilter(): void {
-    const filterValue = this.search.toLowerCase();
-    this.filteredReclamations = this.reclamations.filter(reclamation =>
-      reclamation.description.toLowerCase().includes(filterValue) ||
-      reclamation.statut.toLowerCase().includes(filterValue) ||
-      reclamation.produit.toLowerCase().includes(filterValue)
-    );
-  }
+  // applyFilter(): void {
+  //   const filterValue = this.search.toLowerCase();
+  //   this.filteredReclamations = this.reclamations.filter(reclamation =>
+  //     reclamation.description.toLowerCase().includes(filterValue) ||
+  //     reclamation.statut.toLowerCase().includes(filterValue) ||
+  //     reclamation.produit.toLowerCase().includes(filterValue)
+  //   );
+  // }
 
   openAddDialog(): void {
     const dialogRef = this.dialog.open(ReclamationFormComponent, {

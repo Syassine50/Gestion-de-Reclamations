@@ -12,6 +12,7 @@ import {Router, RouterLink} from '@angular/router';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    MATERIAL_IMPORTS
   ],
 })
 export class RegisterComponent {

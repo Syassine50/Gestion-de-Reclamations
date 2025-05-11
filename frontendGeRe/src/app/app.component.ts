@@ -14,19 +14,25 @@ import { Router, RouterModule } from '@angular/router';
 })
 export class AppComponent {
   title = 'frontendGeRe';
+  ngOnInit() {
+    this.isAuthenticated();
+  }
 
   constructor(private router: Router) {}
  
-  getUsername() {
-    return  JSON.parse(localStorage.getItem('user')??'{\'username\':\'\'').username  ;
-  }
+  // getUsername() {
+  //   return  JSON.parse(localStorage.getItem('user')??'{\'username\':\'\'').username || 'Guest' ;
+  // }
 
 logout(){
+  console.log('token', localStorage.getItem('token'));
   localStorage.removeItem('token');
   localStorage.removeItem('user');
   this.router.navigate(['/login']);
+  this.isAuthenticated();
+  console.log('isAuthenticated', localStorage.getItem('token')!= null);
 }
 isAuthenticated() {
-  return !!localStorage.getItem('token');   
+  return localStorage.getItem('token')!= null;   
 }
 }
