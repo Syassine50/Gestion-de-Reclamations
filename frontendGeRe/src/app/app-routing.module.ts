@@ -7,6 +7,7 @@ import { AgentsListComponent } from './features/agents/agents-list/agents-list.c
 import { ReclamationsListComponent } from './features/reclamations/reclamations-list/reclamations-list.component';
 import { SuivisListComponent } from './features/suivis/suivis-list/suivis-list.component';
 import { SatisfactionReportComponent } from './features/reports/satisfaction-report/satisfaction-report.component';
+import { RegisterComponent } from './auth/register/register.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -15,6 +16,9 @@ const routes: Routes = [
   { path: 'agents', component: AgentsListComponent },
   { path: 'reclamations', component: ReclamationsListComponent },
   { path: 'suivis', component: SuivisListComponent },
+  {path:'register',component:RegisterComponent},
+  { path: 'register', component: RegisterComponent },
+  { path: '', redirectTo: 'register', pathMatch: 'full' }, // Default route for now
   { path: '**', redirectTo: 'dashboard' }
 ];
 

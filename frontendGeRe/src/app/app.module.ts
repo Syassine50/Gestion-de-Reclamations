@@ -19,10 +19,12 @@ import { ReportsModule } from './features/reports/reports.module';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenu, MatMenuModule } from '@angular/material/menu';
+import { RegisterComponent } from './auth/register/register.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
