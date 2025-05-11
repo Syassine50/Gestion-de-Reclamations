@@ -1,32 +1,38 @@
 <mat-toolbar color="primary" class="navbar">
-  <div class="spacer">
-    <span class="logo">
-    <a mat-button routerLink="/dashboard" routerLinkActive="active">📋 GeRe</a></span>
-  </div>
+  <!-- Left: Logo -->
+  <span class="logo">
+    <a mat-button routerLink="/dashboard" routerLinkActive="active">📋 GeRe</a>
+  </span>
 
-  <div class="spacer">
-    <a mat-button routerLink="/dashboard" routerLinkActive="active">
-      <mat-icon>dashboard</mat-icon> Dashboard
-    </a>
-    <a mat-button routerLink="/clients" routerLinkActive="active">
-      <mat-icon>group</mat-icon> Clients
-    </a>
-    <a mat-button routerLink="/agents" routerLinkActive="active">
-      <mat-icon>support_agent</mat-icon> Agents
-    </a>
-    <a mat-button routerLink="/reclamations" routerLinkActive="active">
-      <mat-icon>report_problem</mat-icon> Réclamations
-    </a>
-    <a mat-button routerLink="/suivis" routerLinkActive="active">
-      <mat-icon>timeline</mat-icon> Suivis
-    </a>
-    <a mat-button routerLink="/login" class="btn"  routerLinkActive="active">
-      <mat-icon>timeline</mat-icon> Login
-    </a>
-    <a mat-button routerLink="/Register" class="btn" routerLinkActive="active">
-      <mat-icon>timeline</mat-icon> Suivis
-    </a>
-  </div>
+  <!-- Right: Navigation -->
+  <span class="nav-links">
+    <ng-container *ngIf="isAuthenticated; else guestLinks">
+      <a mat-button routerLink="/dashboard" routerLinkActive="active">
+        <mat-icon>dashboard</mat-icon> Dashboard
+      </a>
+      <a mat-button routerLink="/reclamations" routerLinkActive="active">
+        <mat-icon>report_problem</mat-icon> Réclamations
+      </a>
+      <a mat-button routerLink="/suivis" routerLinkActive="active">
+        <mat-icon>timeline</mat-icon> Suivis
+      </a>
+      <a mat-button disabled class="username">
+        <mat-icon>person</mat-icon> {{ getUsername() }}
+      </a>
+      <a mat-button (click)="logout()" routerLink="/login">
+        <mat-icon>logout</mat-icon> Logout
+      </a>
+    </ng-container>
+
+    <ng-template #guestLinks>
+      <a mat-button routerLink="/login" routerLinkActive="active">
+        <mat-icon>login</mat-icon> Login
+      </a>
+      <a mat-button routerLink="/register" routerLinkActive="active">
+        <mat-icon>person_add</mat-icon> Register
+      </a>
+    </ng-template>
+  </span>
 </mat-toolbar>
 
 <router-outlet></router-outlet>

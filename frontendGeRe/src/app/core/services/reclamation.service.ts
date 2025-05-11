@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { Injectable, SkipSelf } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Reclamation } from '../models/reclamation.interface';
 
@@ -12,7 +12,16 @@ export class ReclamationService {
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<Reclamation[]> {
-    return this.http.get<Reclamation[]>(this.baseUrl);
+    
+    const token = localStorage.getItem('token'); 
+    let headers = new HttpHeaders( );
+    // let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    if (token) {
+      headers = headers.append('Authorization', `Bearer ${encodeURIComponent(token)}`);
+    }
+
+    // Add withCredentials and headers to the cloned request 
+    return this.http.get<Reclamation[]>(this.baseUrl,{ headers, withCredentials: true });
   }
 
   getById(id: number): Observable<Reclamation> {
@@ -20,7 +29,15 @@ export class ReclamationService {
   }
 
   create(reclamation: Reclamation): Observable<Reclamation> {
-    return this.http.post<Reclamation>(this.baseUrl, reclamation);
+
+    const token = localStorage.getItem('token'); 
+    let headers = new HttpHeaders( );
+    // let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    if (token) {
+      headers = headers.append('Authorization', `Bearer ${encodeURIComponent(token)}`);
+    }
+
+    return this.http.post<Reclamation>(this.baseUrl, reclamation,{ headers, withCredentials: true });
   }
 
   update(id: number, reclamation: Reclamation): Observable<Reclamation> {

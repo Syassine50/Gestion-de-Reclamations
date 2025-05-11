@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Agent } from '../models/agent.interface';
 
@@ -12,7 +12,14 @@ export class AgentService {
   constructor(private http: HttpClient) {}
 
   getAll(): Observable<Agent[]> {
-    return this.http.get<Agent[]>(this.baseUrl);
+    const token = localStorage.getItem('token'); 
+    let headers = new HttpHeaders( );
+    // let headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    if (token) {
+      headers = headers.append('Authorization', `Bearer ${encodeURIComponent(token)}`);
+    }
+
+    return this.http.get<Agent[]>(this.baseUrl,{ headers, withCredentials: true });
   }
 
   getById(id: number): Observable<Agent> {
