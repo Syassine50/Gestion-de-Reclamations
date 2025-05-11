@@ -4,6 +4,7 @@ import { AgentsListComponent } from './features/agents/agents-list/agents-list.c
 import { ReclamationsListComponent } from './features/reclamations/reclamations-list/reclamations-list.component';
 import { SuivisListComponent } from './features/suivis/suivis-list/suivis-list.component';
 import { SatisfactionReportComponent } from './features/reports/satisfaction-report/satisfaction-report.component';
+import { RegisterComponent } from './auth/register/register.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -11,5 +12,5 @@ export const routes: Routes = [
   { path: 'clients', component: ClientsListComponent },
   { path: 'agents', component: AgentsListComponent },
   { path: 'reclamations', component: ReclamationsListComponent },
-  { path: 'suivis', component: SuivisListComponent }
-];
+  { path: 'suivis', component: SuivisListComponent },
+  { path: 'register', component: RegisterComponent }];
