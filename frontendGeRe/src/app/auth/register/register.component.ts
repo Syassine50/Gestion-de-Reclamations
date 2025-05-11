@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { AuthService } from '../../core/services/auth.service';
 import { MATERIAL_IMPORTS } from '../../../material-imports';
 import { CommonModule } from '@angular/common';
+import {Router, RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-register',
@@ -10,8 +11,7 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./register.component.scss'],
   imports: [
     CommonModule,
-
-    ReactiveFormsModule, 
+    ReactiveFormsModule,
   ],
 })
 export class RegisterComponent {
@@ -21,11 +21,12 @@ export class RegisterComponent {
   message = '';
   error = '';
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(private fb: FormBuilder, private authService: AuthService , private router: Router) {
     this.registerForm = this.fb.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
       role: ['ROLE_CLIENT', Validators.required],
+      nom: [''],
       email: [''],
       telephone: [''],
       competence: ['']
@@ -59,12 +60,17 @@ export class RegisterComponent {
 
     this.authService.register(this.registerForm.value).subscribe({
       next: (res: any) => {
-        this.message = res?.message || 'Registered successfully';
- // server returns string message
+        console.log('SUCCESS RESPONSE:', res); // Debug
+        this.message = res;
         this.registerForm.reset({ role: 'ROLE_CLIENT' });
         this.onRoleChange();
+
+        this.router.navigate(['/dashboard']);
       },
       error: (err) => {
+
+
+        console.error('ERROR RESPONSE:', err); // Debug
         this.error = err.error?.message || 'Registration failed';
       }
     });
