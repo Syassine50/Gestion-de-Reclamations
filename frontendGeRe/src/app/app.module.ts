@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 
 // Root Component & Routing
@@ -21,23 +21,19 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenu, MatMenuModule } from '@angular/material/menu';
 import { RegisterComponent } from './auth/register/register.component';
 import { LoginComponent } from './auth/login/login.component';
+import { AuthInterceptor } from './core/interceptors/auth.interceptor';
 
 @NgModule({
-  declarations: [
-
-  ],
+  declarations: [],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
     FormsModule,
-
-    // Material (for nav)
     MatToolbarModule,
     MatButtonModule,
     MatMenuModule,
-    // Feature Modules
     ClientsModule,
     AgentsModule,
     MatMenu,
@@ -48,7 +44,9 @@ import { LoginComponent } from './auth/login/login.component';
     RegisterComponent,
     AppComponent
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

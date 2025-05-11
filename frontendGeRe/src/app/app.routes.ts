@@ -3,17 +3,20 @@ import { ClientsListComponent } from './features/clients/clients-list/clients-li
 import { AgentsListComponent } from './features/agents/agents-list/agents-list.component';
 import { ReclamationsListComponent } from './features/reclamations/reclamations-list/reclamations-list.component';
 import { SuivisListComponent } from './features/suivis/suivis-list/suivis-list.component';
-import { SatisfactionReportComponent } from './features/reports/satisfaction-report/satisfaction-report.component';
 import { RegisterComponent } from './auth/register/register.component';
-import {LoginComponent} from './auth/login/login.component';
+import { LoginComponent } from './auth/login/login.component';
+import { AuthGuard } from './core/guards/auth.guard';
+import { ClientGuard } from './core/guards/client.guard';
+import { AgentGuard } from './core/guards/agent.guard';
 
 export const routes: Routes = [
-  { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
-  { path: 'dashboard', component: SatisfactionReportComponent },
-  { path: 'clients', component: ClientsListComponent },
-  { path: 'agents', component: AgentsListComponent },
-  { path: 'reclamations', component: ReclamationsListComponent },
-  { path: 'suivis', component: SuivisListComponent },
+  { path: 'clients', component: ClientsListComponent, canActivate: [AuthGuard, AgentGuard] },
+  { path: 'agents', component: AgentsListComponent, canActivate: [AuthGuard, AgentGuard] },
+  { path: 'reclamations', component: ReclamationsListComponent, canActivate: [AuthGuard] },
+  { path: 'suivis', component: SuivisListComponent, canActivate: [AuthGuard, AgentGuard] },
   { path: 'register', component: RegisterComponent },
-  {path :'login' ,component:LoginComponent},
+  { path: 'login', component: LoginComponent },
+  { path: 'dashboard', component: ReclamationsListComponent, canActivate: [AuthGuard] },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: '**', redirectTo: 'dashboard' }
 ];
