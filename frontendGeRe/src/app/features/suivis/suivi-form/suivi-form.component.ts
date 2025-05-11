@@ -23,10 +23,11 @@ import { Agent } from '../../../core/models/agent.interface';
 export class SuiviFormComponent {
   @Input() suivi: SuiviReclamation = {
     id: 0,
+    message: '',
     action: '',
     date: '',
     reclamationId: 0,
-    agentId: 0
+    employeId: 0
   };
   @Output() save = new EventEmitter<SuiviReclamation>();
 
@@ -54,19 +55,26 @@ export class SuiviFormComponent {
   }
 
   private loadDependencies() {
-    forkJoin({
-      reclamations: this.reclamationService.getAll(),
-      agents: this.agentService.getAll()
-    }).pipe(
-      catchError(err => {
-        this.notificationService.error('Failed to load form data');
-        return of({ reclamations: [], agents: [] });
-      }),
-      finalize(() => this.isLoading = false)
-    ).subscribe(({ reclamations, agents }) => {
-      this.reclamations = reclamations;
-      this.agents = agents;
-    });
+    this.isLoading = false; 
+    this.reclamationService.getAll().subscribe((data)=>{
+      this.reclamations = data;
+    })
+    this.agentService.getAll().subscribe((data)=>{
+      this.agents = data;
+    })
+    // forkJoin({
+    //   reclamations: this.reclamationService.getAll(),
+    //   agents: this.agentService.getAll()
+    // }).pipe(
+    //   catchError(err => {
+    //     this.notificationService.error('Failed to load form data');
+    //     return of({ reclamations: [], agents: [] });
+    //   }),
+    //   finalize(() => this.isLoading = false)
+    // ).subscribe(({ reclamations, agents }) => {
+    //   this.reclamations = reclamations;
+    //   this.agents = agents;
+    // });
   }
 
   onSubmit(): void {
@@ -105,8 +113,12 @@ export class SuiviFormComponent {
     let isValid = true;
     this.errors = {};
 
-    if (!this.suivi.action?.trim()) {
-      this.errors['action'] = 'Action is required';
+    if (!this.suivi.message?.trim()) {
+      this.errors['message'] = 'message is required';
+      isValid = false;
+    }
+    if (!this.suivi.message?.trim()) {
+      this.errors['action'] = 'message is required';
       isValid = false;
     }
 
@@ -115,8 +127,8 @@ export class SuiviFormComponent {
       isValid = false;
     }
 
-    if (!this.suivi.agentId) {
-      this.errors['agentId'] = 'Agent is required';
+    if (!this.suivi.employeId) {
+      this.errors['employeId'] = 'Agent is required';
       isValid = false;
     }
 

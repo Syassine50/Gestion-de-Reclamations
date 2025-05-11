@@ -22,7 +22,7 @@ export class SuivisListComponent implements OnInit {
   suivis: SuiviReclamation[] = [];
   filteredSuivis: SuiviReclamation[] = [];
   search = '';
-  displayedColumns = ['action', 'date', 'reclamationId', 'agentId', 'actions'];
+  displayedColumns = ['message' , 'action', 'date', 'reclamationId', 'employeId', 'actions'];
   isLoading = false;
   error: string | null = null;
 
@@ -54,7 +54,7 @@ export class SuivisListComponent implements OnInit {
   applyFilter(): void {
     const filterValue = this.search.toLowerCase();
     this.filteredSuivis = this.suivis.filter(suivi =>
-      suivi.action.toLowerCase().includes(filterValue)
+      suivi.message.toLowerCase().includes(filterValue)
     );
   }
 
@@ -64,10 +64,11 @@ export class SuivisListComponent implements OnInit {
       data: { 
         suivi: {
           id: 0,
+          message: '',
           action: '',
           date: new Date().toISOString().split('T')[0],
           reclamationId: 0,
-          agentId: 0
+          employeId: 0
         }
       }
     });

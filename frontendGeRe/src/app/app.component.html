@@ -6,7 +6,7 @@
 
   <!-- Right: Navigation -->
   <span class="nav-links">
-    <ng-container *ngIf="isAuthenticated; else guestLinks">
+    <ng-container *ngIf="isAuthenticated()">
       <a mat-button routerLink="/dashboard" routerLinkActive="active">
         <mat-icon>dashboard</mat-icon> Dashboard
       </a>
@@ -16,22 +16,22 @@
       <a mat-button routerLink="/suivis" routerLinkActive="active">
         <mat-icon>timeline</mat-icon> Suivis
       </a>
-      <a mat-button disabled class="username">
+      <!-- <a mat-button disabled class="username">
         <mat-icon>person</mat-icon> {{ getUsername() }}
-      </a>
-      <a mat-button (click)="logout()" routerLink="/login">
+      </a> -->
+      <a mat-button  (click)="logout()" routerLink="/login">
         <mat-icon>logout</mat-icon> Logout
       </a>
     </ng-container>
 
-    <ng-template #guestLinks>
+    <ng-container *ngIf="!isAuthenticated()">
       <a mat-button routerLink="/login" routerLinkActive="active">
         <mat-icon>login</mat-icon> Login
       </a>
       <a mat-button routerLink="/register" routerLinkActive="active">
         <mat-icon>person_add</mat-icon> Register
       </a>
-    </ng-template>
+    </ng-container>
   </span>
 </mat-toolbar>
 

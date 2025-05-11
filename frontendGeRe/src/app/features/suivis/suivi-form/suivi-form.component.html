@@ -23,6 +23,14 @@
              (ngModelChange)="onFieldChange('action')" />
       <mat-error *ngIf="hasError('action')">{{getErrorMessage('action')}}</mat-error>
     </mat-form-field>
+    
+    <mat-form-field class="full-width">
+      <mat-label>Message</mat-label>
+      <input matInput required [(ngModel)]="suivi.message" name="message"
+             [errorStateMatcher]="matcher"
+             (ngModelChange)="onFieldChange('message')" />
+      <mat-error *ngIf="hasError('message')">{{getErrorMessage('message')}}</mat-error>
+    </mat-form-field>
 
     <div class="form-row">
       <mat-form-field class="half-width">
@@ -35,7 +43,7 @@
 
       <mat-form-field class="half-width">
         <mat-label>Agent</mat-label>
-        <mat-select required [(ngModel)]="suivi.agentId" name="agentId"
+        <mat-select required [(ngModel)]="suivi.employeId" name="agentId"
                   [errorStateMatcher]="matcher"
                   (selectionChange)="onFieldChange('agentId')">
           <mat-option *ngFor="let agent of agents" [value]="agent.id">

@@ -1,26 +1,94 @@
-<form (ngSubmit)="onSubmit()" [formGroup]="registerForm">
-    <div *ngIf="message" class="success">{{ message }}</div>
-    <div *ngIf="error" class="error">{{ error }}</div>
+<form (ngSubmit)="onSubmit()" [formGroup]="registerForm" class="cute-register-form">
+  <!-- Messages -->
+  <div *ngIf="message" class="cute-message success">
+    <mat-icon>check_circle</mat-icon>
+    {{ message }}
+  </div>
+  
+  <div *ngIf="error" class="cute-message error">
+    <mat-icon>error</mat-icon>
+    {{ error }}
+  </div>
 
-    <input formControlName="username" placeholder="Username" required />
-    <input formControlName="password" type="password" placeholder="Password" required />
+  <!-- Basic Fields -->
+  <mat-form-field appearance="fill" class="cute-input">
+    <mat-label>Username</mat-label>
+    <input matInput formControlName="username" placeholder="Choose a cute username" required>
+    <mat-icon matSuffix>person_outline</mat-icon>
+  </mat-form-field>
 
-    <select formControlName="role" (change)="onRoleChange()">
-      <option value="ROLE_CLIENT">Client</option>
-      <option value="ROLE_AGENT">Agent</option>
-    </select>
+  <mat-form-field appearance="fill" class="cute-input">
+    <mat-label>Password</mat-label>
+    <input matInput formControlName="password" type="password" placeholder="Super secret password" required>
+    <mat-icon matSuffix>lock</mat-icon>
+  </mat-form-field>
 
-    <div *ngIf="isClient">
-      <input formControlName="nom" placeholder="Name" />
-      <input formControlName="email" placeholder="Email" />
-      <input formControlName="telephone" placeholder="Telephone" />
-    </div>
+  <!-- Role Selection -->
+  <mat-form-field appearance="fill" class="cute-input">
+    <mat-label>I want to register as...</mat-label>
+    <mat-select formControlName="role" (selectionChange)="onRoleChange()">
+      <mat-option value="ROLE_CLIENT">
+        <div class="role-option">Client
+        </div>
+      </mat-option>
+      <mat-option value="ROLE_AGENT">
+        <div class="role-option">Agent
+        </div>
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
 
-    <div *ngIf="isAgent">
+  <!-- Client Fields -->
+  <div *ngIf="isClient" class="cute-field-group" @fadeIn>
+    <h3 class="cute-group-title">
+      <mat-icon>account_circle</mat-icon> Client Information
+    </h3>
+    
+    <mat-form-field appearance="fill" class="cute-input">
+      <mat-label>Full Name</mat-label>
+      <input matInput formControlName="nom" placeholder="Your lovely name">
+      <mat-icon matSuffix>badge</mat-icon>
+    </mat-form-field>
 
-      <input formControlName="nom" placeholder="Name" />
-      <input formControlName="competence" placeholder="Competence" />
-    </div>
+    <mat-form-field appearance="fill" class="cute-input">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" type="email" placeholder="your.email@example.com">
+      <mat-icon matSuffix>email</mat-icon>
+    </mat-form-field>
 
-    <button type="submit">Register</button>
-  </form>
+    <mat-form-field appearance="fill" class="cute-input">
+      <mat-label>Telephone</mat-label>
+      <input matInput formControlName="telephone" placeholder="+123 456 789">
+      <mat-icon matSuffix>call</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <!-- Agent Fields -->
+  <div *ngIf="isAgent" class="cute-field-group" @fadeIn>
+    <h3 class="cute-group-title">
+      <mat-icon>engineering</mat-icon> Agent Information
+    </h3>
+    
+    <mat-form-field appearance="fill" class="cute-input">
+      <mat-label>Full Name</mat-label>
+      <input matInput formControlName="nom" placeholder="Your professional name">
+      <mat-icon matSuffix>badge</mat-icon>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="cute-input">
+      <mat-label>Competence</mat-label>
+      <input matInput formControlName="competence" placeholder="Your special skills">
+      <mat-icon matSuffix>star</mat-icon>
+    </mat-form-field>
+  </div>
+
+  <!-- Submit Button -->
+  <button mat-raised-button type="submit" class="cute-submit-button">
+    <mat-icon>how_to_reg</mat-icon>
+    Register Now
+  </button>
+
+  <div class="cute-footer">
+    <p>Already have an account? <a routerLink="/login" class="cute-link">Login here</a></p>
+  </div>
+</form>

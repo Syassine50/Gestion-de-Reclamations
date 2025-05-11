@@ -1,8 +1,9 @@
 export interface SuiviReclamation {
     id?: number;
+    message: string;
     action: string;
     date: string;
     reclamationId: number;
-    agentId: number;
+    employeId: number;
   }
   
