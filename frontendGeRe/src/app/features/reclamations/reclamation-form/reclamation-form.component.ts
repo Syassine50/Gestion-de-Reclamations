@@ -43,7 +43,14 @@ export class ReclamationFormComponent {
   }
 
   private loadDependencies() {
-    forkJoin({
+    this.isLoading = false
+    this.clientService.getAll().subscribe((data)=>{
+      this.clients = data;
+    })
+    this.agentService.getAll().subscribe((data)=>{
+      this.agents = data;
+    })
+   /* forkJoin({
       clients: this.clientService.getAll(),
       agents: this.agentService.getAll()
     }).pipe(
@@ -54,8 +61,9 @@ export class ReclamationFormComponent {
       finalize(() => this.isLoading = false)
     ).subscribe(({ clients, agents }) => {
       this.clients = clients;
+      console.log(clients);
       this.agents = agents;
-    });
+    });*/
   }
 
   onSubmit(): void {
