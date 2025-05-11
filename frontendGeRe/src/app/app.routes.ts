@@ -5,6 +5,7 @@ import { ReclamationsListComponent } from './features/reclamations/reclamations-
 import { SuivisListComponent } from './features/suivis/suivis-list/suivis-list.component';
 import { SatisfactionReportComponent } from './features/reports/satisfaction-report/satisfaction-report.component';
 import { RegisterComponent } from './auth/register/register.component';
+import {LoginComponent} from './auth/login/login.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
@@ -13,4 +14,6 @@ export const routes: Routes = [
   { path: 'agents', component: AgentsListComponent },
   { path: 'reclamations', component: ReclamationsListComponent },
   { path: 'suivis', component: SuivisListComponent },
-  { path: 'register', component: RegisterComponent }];
+  { path: 'register', component: RegisterComponent },
+  {path :'login' ,component:LoginComponent},
+];

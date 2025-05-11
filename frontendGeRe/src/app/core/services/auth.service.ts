@@ -12,6 +12,10 @@ export class AuthService {
 
 
   register(appUser: AppUser): Observable<AppUser> {
-    return this.http.post<AppUser>(`${this.baseUrl}/register`, appUser);
+    return this.http.post<AppUser>(`${this.baseUrl}/register`, appUser, {responseType: 'text' as 'json'});
+  }
+
+  login(data : any ): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/login`, data);
   }
 }

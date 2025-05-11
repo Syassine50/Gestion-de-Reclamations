@@ -6,7 +6,7 @@ import { FormsModule } from '@angular/forms';
 
 // Root Component & Routing
 import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';
+import { AppRoutingModule } from './app_routing.module';
 
 // Feature Modules
 import { ClientsModule } from './features/clients/clients.module';
@@ -20,11 +20,11 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatMenu, MatMenuModule } from '@angular/material/menu';
 import { RegisterComponent } from './auth/register/register.component';
+import { LoginComponent } from './auth/login/login.component';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    RegisterComponent
+
   ],
   imports: [
     BrowserModule,
@@ -43,7 +43,10 @@ import { RegisterComponent } from './auth/register/register.component';
     MatMenu,
     ReclamationsModule,
     SuivisModule,
-    ReportsModule
+    ReportsModule,
+    LoginComponent,
+    RegisterComponent,
+    AppComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
