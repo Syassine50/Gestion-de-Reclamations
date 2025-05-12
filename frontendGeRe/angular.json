@@ -30,6 +30,13 @@
             "polyfills": [
               "zone.js"
             ],
+            "allowedCommonJsDependencies": [
+             "html2canvas",
+             "canvg",
+              "rgbcolor",
+              "raf",
+              "core-js"
+            ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
